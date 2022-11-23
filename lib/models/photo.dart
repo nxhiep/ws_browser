@@ -24,5 +24,14 @@ class Photo {
 
   Map<String, dynamic> toJson() => _$PhotoToJson(this);
 
-  String getImage() => urls['full'] ?? "";
+  String getImageRaw() => urls['raw'] ?? "";
+  String getImageFull() => urls['full'] ?? "";
+  String getImageThumb() => urls['thumb'] ?? "";
+  String getImageSmall() => urls['small'] ?? "";
+  String getImageRegular() => urls['regular'] ?? "";
+
+  String getLinkSelf() => links['self'] ?? "";
+  String getLinkHTML() => urls['html'] ?? "";
+  String getLinkDownload() => urls['download'] ?? "";
+  String getLinkDownLoadLocation() => urls['download_location'] ?? "";
 }

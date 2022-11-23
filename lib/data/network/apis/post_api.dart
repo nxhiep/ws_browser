@@ -8,9 +8,9 @@ import 'package:worksheet_browser/models/photo.dart';
 class PostApi {
   final http.Client _client = http.Client();
 
-  Future<List<Photo>> getPhotos() async {
+  Future<List<Photo>> getPhotos(int limit) async {
     try {
-      final res = await _client.get(Uri.parse(Endpoints.getPhotoUrl));
+      final res = await _client.get(Uri.parse(Endpoints.getPhotoUrl(limit)));
       if(res.statusCode == 200) {
         List<dynamic> maps = jsonDecode(res.body);
         return maps.map((e) => Photo.fromJson(e)).toList();

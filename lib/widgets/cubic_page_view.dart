@@ -40,6 +40,7 @@ class _CubicPageViewState extends State<CubicPageView> {
       itemCount: children.length,
       dragStartBehavior: DragStartBehavior.start,
       physics: const NeverScrollableScrollPhysics(),
+      pageSnapping: false,
       itemBuilder: (_, position) {
         Alignment? al;
         if (position == currentPageValue.floor()) al = Alignment.centerRight;
