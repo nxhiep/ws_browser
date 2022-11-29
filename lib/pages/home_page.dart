@@ -1,10 +1,7 @@
-import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:worksheet_browser/data/network/apis/get_api.dart';
 import 'package:worksheet_browser/models/photo.dart';
-import 'package:worksheet_browser/pages/photo_item.dart';
-import 'package:worksheet_browser/pages/photos_wrapper.dart';
+import 'package:worksheet_browser/pages/my_grid_view.dart';
 import 'package:worksheet_browser/widgets/loading.dart';
 
 class HomePage extends StatefulWidget {
@@ -33,23 +30,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        child: _photos.isEmpty ? const LoadingWidget() : SingleChildScrollView(
-          child: StaggeredGrid.count(
-            crossAxisCount: 2,
-            children: _photos.map((photo) {
-              return PhotoItem(
-                photo: photo,
-                onTap: () {
-                  context.pushTransparentRoute(
-                    PhotosWrapper(
-                      parentIndex: _photos.indexOf(photo),
-                      photos: _photos,
-                    ),
-                  );
-                },
-              );
-            }).toList()
-          ),
+        child: _photos.isEmpty ? const LoadingWidget() : MyGridView(
+          photos: _photos
         ),
       ),
     );

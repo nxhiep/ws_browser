@@ -109,11 +109,11 @@ class _PhotosWrapperState extends State<PhotosWrapper>
       behavior: Config.behavior,
       reverseDuration: Config.reverseDuration,
       onDragUpdate: (d) => print(d.offset.dy),
-      child: CubicPageView(
-        controller: pageCtrl,
-        children: photos.map((photo) {
+      child: PageView.builder(
+        itemCount: photos.length,
+        itemBuilder: (context, index) {
           return PhotoPage(
-            photo: photo,
+            photo: photos[index],
             // nextGroup: nextPage,
             // previousGroup: previousPage,
             nextGroup: () {
@@ -124,8 +124,25 @@ class _PhotosWrapperState extends State<PhotosWrapper>
               pageCtrl.jumpTo(value);
             },
           );
-        }).toList(),
+        },
       ),
+      // child: CubicPageView(
+      //   controller: pageCtrl,
+      //   children: photos.map((photo) {
+      //     return PhotoPage(
+      //       photo: photo,
+      //       // nextGroup: nextPage,
+      //       // previousGroup: previousPage,
+      //       nextGroup: () {
+      //       },
+      //       previousGroup: () {
+      //       },
+      //       onUpdate: (double value) {
+      //         pageCtrl.jumpTo(value);
+      //       },
+      //     );
+      //   }).toList(),
+      // ),
     );
   }
 }

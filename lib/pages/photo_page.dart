@@ -18,21 +18,21 @@ class PhotoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    void _onTap(DragUpdateDetails details) async {
-      print("details ${width - details.localPosition.dx}");
+    // final width = MediaQuery.of(context).size.width;
+    // void _onTap(DragUpdateDetails details) async {
+    //   print("details ${width - details.localPosition.dx}");
       // onUpdate(details.localPosition.dx);
       // final dx = details.globalPosition.dx;
       // if (dx < width / 2) return previousGroup(dx);
       // return nextGroup(dx);
-    }
-    return GestureDetector(
-      onHorizontalDragUpdate: _onTap,
-      onDoubleTap: () {
-        print("111111");
-      },
-      child: PhotoImage(photo),
-    );
+    // }
+    // return GestureDetector(
+    //   onHorizontalDragUpdate: _onTap,
+    //   onDoubleTap: () {
+    //     print("111111");
+    //   },
+    //   child: PhotoImage(photo),
+    // );
     return PhotoImage(photo);
   }
 }

@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:worksheet_browser/data/network/apis/get_api.dart';
 import 'package:worksheet_browser/models/photo.dart';
-import 'package:worksheet_browser/pages/photo_item.dart';
+import 'package:worksheet_browser/pages/my_grid_view.dart';
 import 'package:worksheet_browser/widgets/loading.dart';
 
 class PhotoImage extends StatefulWidget {
@@ -33,28 +32,32 @@ class _PhotoImageState extends State<PhotoImage> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        children: [
-          Hero(
-            tag: widget.photo.id,
-            child: Material(
-              color: Colors.transparent,
-              // child: _makeContent1(),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return Stack(
-                    children: [
-                      _makeContent2(constraints),
-                      _makeBackButton(),
-                    ],
-                  );
-                }
-              )
-            ),
-          ),
-          _makeListPhotos(),
-        ],
+        children: <Widget>[
+          _makeImage(),
+          _makeListPhotos()
+        ]
       ),
-    ); 
+    );
+  }
+
+  Widget _makeImage() {
+    return Hero(
+      tag: widget.photo.id,
+      child: Material(
+        color: Colors.transparent,
+        // child: _makeContent1(),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Stack(
+              children: [
+                _makeContent2(constraints),
+                _makeBackButton(),
+              ],
+            );
+          }
+        )
+      ),
+    );
   }
 
   Widget _makeMenuBG(BoxConstraints constraints) {
@@ -131,15 +134,6 @@ class _PhotoImageState extends State<PhotoImage> {
     if(_relativePhotos.isEmpty) {
       return const SizedBox();
     }
-    return StaggeredGrid.count(
-      crossAxisCount: 2,
-      children: _relativePhotos.map((photo) {
-        return PhotoItem(
-          photo: photo, 
-          onTap: () {
-          }
-        );
-      }).toList(),
-    );
+    return MyGridView(photos: _relativePhotos);
   }
 }
