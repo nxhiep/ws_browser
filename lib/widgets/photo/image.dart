@@ -1,14 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:worksheet_browser/data/network/apis/get_api.dart';
-import 'package:worksheet_browser/models/photo.dart';
-import 'package:worksheet_browser/pages/my_grid_view.dart';
+import 'package:worksheet_browser/models/photo_data_item.dart';
 import 'package:worksheet_browser/widgets/loading.dart';
 
 class PhotoImage extends StatefulWidget {
-  final Photo photo;
+  final PhotoDataItem photo;
 
-  const PhotoImage(this.photo, { Key? key }) : super(key: key);
+  const PhotoImage({ Key? key, required this.photo }) : super(key: key);
 
   @override
   _PhotoImageState createState() => _PhotoImageState();
@@ -16,41 +14,24 @@ class PhotoImage extends StatefulWidget {
 
 class _PhotoImageState extends State<PhotoImage> {
 
-  List<Photo> _relativePhotos = [];
+  PhotoDataItem get photo => widget.photo;
 
   @override
   void initState() {
     super.initState();
-    GetApi().getPhotos(10).then((value) {
-      setState(() {
-        _relativePhotos = value..removeWhere((element) => element.id == widget.photo.id);
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          _makeImage(),
-          _makeListPhotos()
-        ]
-      ),
-    );
-  }
-
-  Widget _makeImage() {
     return Hero(
-      tag: widget.photo.id,
+      tag: photo.key,
       child: Material(
         color: Colors.transparent,
-        // child: _makeContent1(),
         child: LayoutBuilder(
           builder: (context, constraints) {
             return Stack(
               children: [
-                _makeContent2(constraints),
+                _makeContent(constraints),
                 _makeBackButton(),
               ],
             );
@@ -109,7 +90,7 @@ class _PhotoImageState extends State<PhotoImage> {
     );
   }
 
-  Widget _makeContent2(BoxConstraints constraints) {
+  Widget _makeContent(BoxConstraints constraints) {
     return Stack(
       children: [
         Container(
@@ -119,7 +100,7 @@ class _PhotoImageState extends State<PhotoImage> {
             color: Color.fromRGBO(237, 241, 248, 1),
           ),
           child: CachedNetworkImage(
-            imageUrl: widget.photo.getImageRegular(),
+            imageUrl: photo.photo.getImageRegular(),
             placeholder: (context, child) => const LoadingWidget(),
             errorWidget: (context, error, stackTrace) => Image.asset("assets/images/photo_not_found.png"),
           ),
@@ -128,12 +109,5 @@ class _PhotoImageState extends State<PhotoImage> {
         _makeMenuButton(),
       ],
     );
-  }
-
-  Widget _makeListPhotos() {
-    if(_relativePhotos.isEmpty) {
-      return const SizedBox();
-    }
-    return MyGridView(photos: _relativePhotos);
   }
 }

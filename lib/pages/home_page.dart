@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:worksheet_browser/data/network/apis/get_api.dart';
-import 'package:worksheet_browser/models/photo.dart';
-import 'package:worksheet_browser/pages/my_grid_view.dart';
+import 'package:provider/provider.dart';
+import 'package:worksheet_browser/widgets/photos.dart';
+import 'package:worksheet_browser/provider/photo_data_model.dart';
 import 'package:worksheet_browser/widgets/loading.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,15 +13,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  late List<Photo> _photos = [];
-
   @override
   void initState() {
     super.initState();
-    GetApi().getPhotos(30).then((value) {
-      setState(() {
-        _photos = value;
-      });
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      Provider.of<PhotosDataModel>(context, listen: false).loadData();
     });
   }
 
@@ -30,8 +26,21 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        child: _photos.isEmpty ? const LoadingWidget() : MyGridView(
-          photos: _photos
+        child: Consumer<PhotosDataModel>(
+          builder: (context, value, child) {
+            if(value.loading) {
+              return const LoadingWidget();
+            }
+            return MyGridView(
+              photos: value.photoDataItems,
+              onLoadMore: () {
+                Provider.of<PhotosDataModel>(context, listen: false).loadMore();
+              },
+              onRefresh: () {
+                Provider.of<PhotosDataModel>(context, listen: false).loadData();
+              },
+            );
+          }
         ),
       ),
     );
