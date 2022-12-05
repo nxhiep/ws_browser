@@ -1,10 +1,13 @@
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 import 'package:worksheet_browser/models/photo_data_item.dart';
 import 'package:worksheet_browser/provider/photo_item_model.dart';
 import 'package:worksheet_browser/widgets/loading.dart';
 import 'package:worksheet_browser/widgets/photo/image.dart';
-import 'package:worksheet_browser/widgets/photos.dart';
+import 'package:worksheet_browser/widgets/photo/item.dart';
+import 'package:worksheet_browser/widgets/photo/wrapper.dart';
 
 class PhotoPage extends StatefulWidget {
   final PhotoDataItem photo;
@@ -69,21 +72,26 @@ class _PhotoPageState extends State<PhotoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      physics: const ClampingScrollPhysics(),
-      controller: _pageController,
-      itemCount: photos.length,
-      onPageChanged: (index) {
-        Provider.of<PhotoItemModel>(context, listen: false).loadData(photos[index]);
-      },
-      itemBuilder: (context, index) {
-        return Stack(
-          children: [
-            PhotoImage(photo: photos[index]),
-            _makeListPhoto()
-          ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return PageView.builder(
+          physics: const ClampingScrollPhysics(),
+          controller: _pageController,
+          itemCount: photos.length,
+          onPageChanged: (index) {
+            Provider.of<PhotoItemModel>(context, listen: false).loadData(photos[index]);
+          },
+          itemBuilder: (context, index) {
+            return PhotoImage(
+              photo: photos[index],
+              child: _makeListPhoto(),
+              onLoadMore: () {
+                Provider.of<PhotoItemModel>(context, listen: false).loadMore(photoItem);
+              }
+            );
+          },
         );
-      },
+      }
     );
   }
 
@@ -94,14 +102,18 @@ class _PhotoPageState extends State<PhotoPage> {
         if(value.loading || items == null) {
           return const LoadingWidget();
         }
-        return MyGridView(
-          photos: items,
-            onLoadMore: () {
-              Provider.of<PhotoItemModel>(context, listen: false).loadMore(photoItem);
-            },
-            onRefresh: () {
-              Provider.of<PhotoItemModel>(context, listen: false).loadData(photoItem);
-            },
+        return StaggeredGrid.count(
+          crossAxisCount: 2,
+          children: items.map((photo) {
+            return PhotoItem(
+              photo: photo, 
+              onTap: () {
+                context.pushTransparentRoute(
+                  PhotosWrapper(photo: photo),
+                );
+              }
+            );
+          }).toList(),
         );
       },
     );

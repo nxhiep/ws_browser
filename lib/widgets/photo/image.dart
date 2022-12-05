@@ -3,42 +3,60 @@ import 'package:flutter/material.dart';
 import 'package:worksheet_browser/models/photo_data_item.dart';
 import 'package:worksheet_browser/widgets/loading.dart';
 
-class PhotoImage extends StatefulWidget {
+class PhotoImage extends StatelessWidget {
   final PhotoDataItem photo;
-
-  const PhotoImage({ Key? key, required this.photo }) : super(key: key);
-
-  @override
-  _PhotoImageState createState() => _PhotoImageState();
-}
-
-class _PhotoImageState extends State<PhotoImage> {
-
-  PhotoDataItem get photo => widget.photo;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final Widget? child;
+  final VoidCallback onLoadMore;
+  const PhotoImage({ Key? key, required this.photo, this.child, required this.onLoadMore }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: photo.key,
-      child: Material(
-        color: Colors.transparent,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return Stack(
-              children: [
-                _makeContent(constraints),
-                _makeBackButton(),
-              ],
-            );
+    bool requesting = false;
+    return NotificationListener(
+      onNotification: (notification) {
+        if (notification is ScrollUpdateNotification && notification.metrics.axis == Axis.vertical) {
+          if(notification.metrics.pixels >= notification.metrics.maxScrollExtent - 300) {
+            if(!requesting) {
+              requesting = true;
+              requesting = true;
+              onLoadMore();
+              Future.delayed(const Duration(seconds: 2), () => requesting = false);
+            }
           }
-        )
+        }
+        return false;
+      },
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Hero(
+              tag: photo.key,
+              child: Material(
+                color: Colors.transparent,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Stack(
+                      children: [
+                        _makeContent(constraints),
+                        _makeBackButton(context),
+                      ],
+                    );
+                  }
+                )
+              ),
+            ),
+            _makeListPhoto() 
+          ],
+        ),
       ),
     );
+  }
+
+  Widget _makeListPhoto() {
+    if(child == null) {
+      return const SizedBox();
+    }
+    return child!;
   }
 
   Widget _makeMenuBG(BoxConstraints constraints) {
@@ -78,7 +96,7 @@ class _PhotoImageState extends State<PhotoImage> {
     );
   }
 
-  Widget _makeBackButton() {
+  Widget _makeBackButton(BuildContext context) {
     return Positioned(
       width: 70,
       height: 70,
