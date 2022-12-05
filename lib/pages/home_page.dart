@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:worksheet_browser/pages/create_page.dart';
 import 'package:worksheet_browser/widgets/photos.dart';
 import 'package:worksheet_browser/provider/photo_data_model.dart';
 import 'package:worksheet_browser/widgets/loading.dart';
@@ -24,7 +25,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateWorkSheetPage()));
+            }, 
+            icon: const Icon(Icons.create_new_folder)
+          )
+        ],
+      ),
       body: SafeArea(
         child: Consumer<PhotosDataModel>(
           builder: (context, value, child) {
