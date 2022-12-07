@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:worksheet_browser/pages/create_page.dart';
+import 'package:worksheet_browser/pages/create_ws/create_page.dart';
 import 'package:worksheet_browser/widgets/photos.dart';
 import 'package:worksheet_browser/provider/photo_data_model.dart';
 import 'package:worksheet_browser/widgets/loading.dart';
@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<PhotosDataModel>(context, listen: false).loadData();
     });
   }
