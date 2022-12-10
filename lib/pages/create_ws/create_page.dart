@@ -23,7 +23,9 @@ class _CreateWorkSheetPageState extends State<CreateWorkSheetPage> {
               child: StackBoard(
                 background: Container(color: Colors.grey.withOpacity(0.5)),
                 controller: _controller,
-
+                customBuilder: (item) {
+                  return item.child;
+                },
               ),
             ),
             Row(
@@ -38,13 +40,8 @@ class _CreateWorkSheetPageState extends State<CreateWorkSheetPage> {
                   child: IconButton(
                     color: Colors.white,
                     onPressed: () {
-                      _controller.add(
-                        const AdaptiveText(
-                          'text',
-                          tapToEdit: true,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      );
+                      // _controller.add(const ImageCase());
+                      _controller.add(const StackBoardItem(child: ImageCase()));
                     }, 
                     icon: const Icon(Icons.abc_rounded)
                   ),
@@ -69,6 +66,22 @@ class _CreateWorkSheetPageState extends State<CreateWorkSheetPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ImageCase extends StatefulWidget {
+  const ImageCase({Key? key}) : super(key: key);
+
+  @override
+  State<ImageCase> createState() => _ImageCaseState();
+}
+
+class _ImageCaseState extends State<ImageCase> {
+  @override
+  Widget build(BuildContext context) {
+    return ItemCase(
+      child: Image.asset("assets/images/photo_not_found.png"),
     );
   }
 }

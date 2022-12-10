@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:worksheet_browser/data/network/constants/endpoints.dart';
@@ -13,7 +14,7 @@ const bool getDataFromLocal = true;
 class GetApi {
   final http.Client _client = http.Client();
 
-  static Future<List<Photo>> getPhotosFromLocal(int limit) async {
+  Future<List<Photo>> getPhotosFromLocal(int limit) async {
     String fileName = "data.json";
     final Directory directory = await getApplicationDocumentsDirectory();
     final File file = File('${directory.path}/$fileName');
@@ -27,9 +28,9 @@ class GetApi {
     return [];
   }
 
-  static void savePhotos(List<Photo> photos) async {
+  void savePhotos(List<Photo> photos) async {
     String fileName = "data.json";
-    List<Photo> oldPhotos = await getPhotosFromLocal(-1);
+    List<Photo> oldPhotos = await this.getPhotosFromLocal(-1);
     Map<String, Photo> mapOldPhoto = {};
     for(Photo photo in oldPhotos) {
       mapOldPhoto[photo.id] = photo;
@@ -43,14 +44,14 @@ class GetApi {
     await saveJson(fileName, data);
   }
 
-  static Future<void> saveJson(String name, String data) async {
+  Future<void> saveJson(String name, String data) async {
     try {
       final Directory directory = await getApplicationDocumentsDirectory();
-      File _file = File('${directory.path}/$name');
-      print("saveJsonData ${_file.path}");
-      await _file.writeAsString(data);
+      File file = File('${directory.path}/$name');
+      debugPrint('saveJsonData ${file.path}');
+      await file.writeAsString(data);
     } catch(e){
-      print("saveJsonData Error: $e");
+      debugPrint('saveJsonData Error: $e');
     }
   }
 
@@ -68,7 +69,7 @@ class GetApi {
       }
       return [];
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       return [];
     }
   }
