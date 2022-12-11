@@ -16,11 +16,11 @@ class ExValueBuilder<T> extends StatefulWidget {
     this.shouldRebuild,
   }) : super(key: key);
 
-  final ValueListenable<T?> valueListenable;
+  final ValueListenable<T> valueListenable;
 
-  final ValueWidgetBuilder<T?> builder;
+  final ValueWidgetBuilder<T> builder;
 
-  final bool Function(T? previous, T? next)? shouldRebuild;
+  final bool Function(T previous, T next)? shouldRebuild;
 
   final Widget? child;
 
@@ -29,7 +29,7 @@ class ExValueBuilder<T> extends StatefulWidget {
 }
 
 class _ExValueBuilderState<T> extends State<ExValueBuilder<T>> {
-  T? value;
+  late T value;
 
   @override
   void initState() {
