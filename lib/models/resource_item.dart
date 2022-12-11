@@ -113,7 +113,7 @@ class ResourceItem {
       width: 100,
       name: 'Add a text',
       rotation: 0,
-      type: FunctionalID.shapes.index,
+      type: FunctionalID.shape.index,
       svgContent: '',
       url: imageUrl,
       worksheetId: worksheetId,

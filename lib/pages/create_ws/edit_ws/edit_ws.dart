@@ -4,11 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:stack_board/stack_board.dart';
 import 'package:worksheet_browser/models/resource_item.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/functional/menu.dart';
-import 'package:worksheet_browser/pages/create_ws/edit_ws/item_case.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/items_case/shape_case.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/items_case/text_case.dart';
+import 'package:worksheet_browser/pages/create_ws/edit_ws/new_items/text_item.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/provider/edit_ws.provider.dart';
-import 'package:worksheet_browser/pages/create_ws/edit_ws/resource_item_widget.dart';
 
 class EditWSPage extends StatefulWidget {
   const EditWSPage({ Key? key }) : super(key: key);
@@ -38,10 +37,9 @@ class _EditWSPageState extends State<EditWSPage> {
             return Selector<EditWSProvider, List<ResourceItem>>(
               selector: (p0, p1) => p1.resourceItems,
               builder: (context, value, child) {
-                print("value ${value.length}");
                 return Stack(
                   // children: value.map((e) => ResourceItemWidget(item: e, constants: constraints)).toList(),
-                  children: value.map((e) => ElementItem(
+                  children: value.map((e) => TextItem(
                     item: e, 
                     constraints: constraints,
                   )).toList(),
@@ -61,7 +59,7 @@ class _EditWSPageState extends State<EditWSPage> {
       floatingActionButton: FloatingActionButton.extended(
         // onPressed: _showBottomSheet, 
         onPressed: () {
-          Provider.of<EditWSProvider>(context, listen: false).addItem(ResourceItem.createShape("", ""));
+          Provider.of<EditWSProvider>(context, listen: false).addItem(ResourceItem.createText(20, ""));
         }, 
         label: const Icon(Icons.more_horiz)
       ),

@@ -6,11 +6,15 @@ import 'package:worksheet_browser/helper/ex_value_builder.dart';
 import 'package:worksheet_browser/helper/safe_state.dart';
 import 'package:worksheet_browser/helper/set_value_notifier.dart';
 import 'package:worksheet_browser/models/resource_item.dart';
+import 'package:worksheet_browser/pages/create_ws/edit_ws/functional/config.dart';
+import 'package:worksheet_browser/pages/create_ws/edit_ws/new_items/text_item.dart';
 
 class ElementItem extends StatefulWidget {
   const ElementItem({
     Key? key,
     required this.item,
+    required this.child,
+    required this.constraints,
     this.tools,
     this.tapToEdit = false,
     this.operatState = OperatState.idle,
@@ -21,13 +25,13 @@ class ElementItem extends StatefulWidget {
     this.onOffsetChanged,
     this.onAngleChanged,
     this.onTap,
-    required this.constraints,
     this.caseStyle
   }) : super(key: key);
 
   @override
   ElementItemState createState() => ElementItemState();
 
+  final Widget child;
   final CaseStyle? caseStyle;
   final BoxConstraints constraints;
   final ResourceItem item;
@@ -294,16 +298,8 @@ class ElementItemState extends State<ElementItem> with SafeState<ElementItem> {
 
   final List<Color> colors = [Colors.red, Colors.blue, Colors.green, Colors.yellow, Colors.amber, Colors.indigo, Colors.cyanAccent];
 
-  Widget _makeContent() {
-    return Container(
-      width: item.width,
-      height: item.height,
-      color: colors[math.Random().nextInt(colors.length)],
-    );
-  }
-
   Widget get _child {
-    Widget content = _makeContent();
+    Widget content = widget.child;
     return ExValueBuilder<ResourceItem>(
       shouldRebuild: (ResourceItem p, ResourceItem n) => Size(p.width, p.height) != Size(n.width, n.height),
       valueListenable: _config,

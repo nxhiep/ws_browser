@@ -73,7 +73,7 @@ class _MyMenuWidgetState extends State<MyMenuWidget> {
   }
 
   Widget _makeContent() {
-    if(currentFunctionalID == FunctionalID.backgrounds) {
+    if(currentFunctionalID == FunctionalID.background) {
       return ChangeNotifierProvider(
         create: (_) => BackgroundProvider(),
         builder: (context, child) {
@@ -95,7 +95,7 @@ class _MyMenuWidgetState extends State<MyMenuWidget> {
         },
       );
     }
-    if(currentFunctionalID == FunctionalID.shapes) {
+    if(currentFunctionalID == FunctionalID.shape) {
       return ChangeNotifierProvider(
         create: (_) => ShapeProvider(),
         builder: (context, child) {
