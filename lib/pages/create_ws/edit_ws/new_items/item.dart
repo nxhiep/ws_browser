@@ -6,8 +6,6 @@ import 'package:worksheet_browser/helper/ex_value_builder.dart';
 import 'package:worksheet_browser/helper/safe_state.dart';
 import 'package:worksheet_browser/helper/set_value_notifier.dart';
 import 'package:worksheet_browser/models/resource_item.dart';
-import 'package:worksheet_browser/pages/create_ws/edit_ws/functional/config.dart';
-import 'package:worksheet_browser/pages/create_ws/edit_ws/new_items/text_item.dart';
 
 class ElementItem extends StatefulWidget {
   const ElementItem({

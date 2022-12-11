@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stack_board/stack_board.dart';
 import 'package:worksheet_browser/helper/safe_state.dart';
 import 'package:worksheet_browser/models/resource_item.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/new_items/item.dart';
+import 'package:worksheet_browser/pages/create_ws/edit_ws/provider/edit_ws.provider.dart';
 
 const TextStyle _defaultStyle = TextStyle(fontSize: 20);
 
@@ -17,15 +19,10 @@ class TextItem extends StatefulWidget {
 
 class _TextItemState extends State<TextItem> with SafeState<TextItem> {
 
+  ResourceItem get item => widget.item;
   bool _isEditing = false;
-  late String _text = widget.item.name;
+  late String _text = item.name;
   TextStyle get _style => _defaultStyle;
-
-  @override
-  void initState() {
-    super.initState();
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +32,9 @@ class _TextItemState extends State<TextItem> with SafeState<TextItem> {
       canEdit: true,
       // onTap: widget.onTap,
       tapToEdit: true,
-      // onDel: widget.onDel,
+      onDel: () {
+        Provider.of<EditWSProvider>(context, listen: false).removeItem(item);
+      },
       child: _isEditing ? _buildEditingBox : _buildTextBox,
       onOperatStateChanged: (OperatState s) {
         if (s != OperatState.editing && _isEditing) {
