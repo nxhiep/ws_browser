@@ -1,11 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_board/stack_board.dart';
 import 'package:worksheet_browser/models/resource_item.dart';
+import 'package:worksheet_browser/pages/create_ws/edit_ws/functional/config.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/functional/menu.dart';
-import 'package:worksheet_browser/pages/create_ws/edit_ws/items_case/shape_case.dart';
-import 'package:worksheet_browser/pages/create_ws/edit_ws/items_case/text_case.dart';
+import 'package:worksheet_browser/pages/create_ws/edit_ws/new_items/shape_item.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/new_items/text_item.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/provider/edit_ws.provider.dart';
 
@@ -18,13 +17,13 @@ class EditWSPage extends StatefulWidget {
 
 class _EditWSPageState extends State<EditWSPage> {
 
-  late StackBoardController _controller;
   Widget? background;
+  late EditWSProvider provider;
 
   @override
   void initState() {
     super.initState();
-    _controller = StackBoardController();
+    provider = Provider.of<EditWSProvider>(context, listen: false);
   }
 
   @override
@@ -37,12 +36,21 @@ class _EditWSPageState extends State<EditWSPage> {
             return Selector<EditWSProvider, List<ResourceItem>>(
               selector: (p0, p1) => p1.resourceItems,
               builder: (context, value, child) {
+                List<Widget> _list = value.map((e) {
+                    if(e.type == FunctionalID.shape.index) {
+                      return ShapeItem(item: e, constraints: constraints);
+                    }
+                    return TextItem(
+                      item: e, 
+                      constraints: constraints,
+                    );
+                  }).toList();
+                if(background != null) {
+                  _list.add(background!);
+                }
                 return Stack(
                   // children: value.map((e) => ResourceItemWidget(item: e, constants: constraints)).toList(),
-                  children: value.map((e) => TextItem(
-                    item: e, 
-                    constraints: constraints,
-                  )).toList(),
+                  children: _list,
                 );
               },
             );
@@ -57,10 +65,10 @@ class _EditWSPageState extends State<EditWSPage> {
         // )
       ),
       floatingActionButton: FloatingActionButton.extended(
-        // onPressed: _showBottomSheet, 
-        onPressed: () {
-          Provider.of<EditWSProvider>(context, listen: false).addItem(ResourceItem.createText(20, ""));
-        }, 
+        onPressed: _showBottomSheet, 
+        // onPressed: () {
+        //   Provider.of<EditWSProvider>(context, listen: false).addItem(ResourceItem.createText(20, ""));
+        // }, 
         label: const Icon(Icons.more_horiz)
       ),
     );
@@ -70,13 +78,9 @@ class _EditWSPageState extends State<EditWSPage> {
     showModalBottomSheet(
       context: context, 
       builder: (context) => MyMenuWidget(
-        addItem: (StackBoardItem item) {
-          print('item $item');
-          if(item is TextCase) {
-            _controller.add<TextCase>(item);
-          } else if(item is ShapeCase) {
-            _controller.add<ShapeCase>(item);
-          }
+        addItem: (ResourceItem item) {
+          print("xxxxx");
+          provider.addItem(item);
         },
         onChangedBackground: (Widget widget) => setState(() => background = widget)
       )

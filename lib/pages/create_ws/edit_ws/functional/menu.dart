@@ -1,20 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stack_board/stack_board.dart';
 import 'package:worksheet_browser/models/resource_item.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/functional/background.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/functional/config.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/functional/shape.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/functional/text.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/functional/upload.dart';
-import 'package:worksheet_browser/pages/create_ws/edit_ws/items_case/shape_case.dart';
-import 'package:worksheet_browser/pages/create_ws/edit_ws/items_case/text_case.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/provider/background.provider.dart';
 import 'package:worksheet_browser/pages/create_ws/edit_ws/provider/shape.provider.dart';
 
 class MyMenuWidget extends StatefulWidget {
-  final void Function(StackBoardItem item) addItem;
+  final void Function(ResourceItem item) addItem;
   final void Function(Widget widget) onChangedBackground;
   const MyMenuWidget({ Key? key, required this.addItem, required this.onChangedBackground }) : super(key: key);
 
@@ -91,7 +88,7 @@ class _MyMenuWidgetState extends State<MyMenuWidget> {
     if(currentFunctionalID == FunctionalID.text) {
       return TextsFunctional(
         onSelectedText: (size) {
-          widget.addItem(TextCase(item: ResourceItem.createText(size, '')));
+          widget.addItem(ResourceItem.createText(size, ''));
         },
       );
     }
@@ -101,7 +98,7 @@ class _MyMenuWidgetState extends State<MyMenuWidget> {
         builder: (context, child) {
           return ShapeFunctional(
             onSelectedImage: (imageUrl) {
-              widget.addItem(ShapeCase(item: ResourceItem.createShape(imageUrl, '')));
+              widget.addItem(ResourceItem.createShape(imageUrl, ''));
             },
           );
         }
