@@ -8,11 +8,17 @@ class Worksheet {
   String id;
   String title;
   String description;
+  int totalPages;
+  int type;
+  String thumbnail;
 
   Worksheet({ 
     required this.id, 
     required this.title, 
     required this.description, 
+    required this.totalPages, 
+    required this.type, 
+    required this.thumbnail, 
   });
 
   factory Worksheet.fromJson(Map<String, dynamic> json) => _$WorksheetFromJson(json);

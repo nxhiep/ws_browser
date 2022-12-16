@@ -17,6 +17,7 @@ class ResourceItem {
   String fontColor;
   double fontSize;
 
+  int page;
   double x;
   double y;
   double rotation;
@@ -40,6 +41,7 @@ class ResourceItem {
     required this.svgContent, 
     required this.worksheetId, 
     required this.type, 
+    required this.page, 
   });
 
   factory ResourceItem.fromJson(Map<String, dynamic> json) => _$ResourceItemFromJson(json);
@@ -61,7 +63,8 @@ class ResourceItem {
       url: '',
       worksheetId: worksheetId,
       x: 0,
-      y: 0
+      y: 0,
+      page: 0
     );
   }
 
@@ -80,7 +83,8 @@ class ResourceItem {
       url: '',
       worksheetId: worksheetId,
       x: 0,
-      y: 0
+      y: 0,
+      page: 0
     );
   }
 
@@ -99,7 +103,8 @@ class ResourceItem {
       url: item.url,
       worksheetId: item.worksheetId,
       x: item.x,
-      y: item.y
+      y: item.y,
+      page: 0
     );
   }
 
@@ -118,7 +123,8 @@ class ResourceItem {
       url: imageUrl,
       worksheetId: worksheetId,
       x: 0,
-      y: 0
+      y: 0,
+      page: 0
     );
   }
 }

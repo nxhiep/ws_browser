@@ -21,6 +21,7 @@ ResourceItem _$ResourceItemFromJson(Map<String, dynamic> json) => ResourceItem(
       svgContent: json['svgContent'] as String,
       worksheetId: json['worksheetId'] as String,
       type: json['type'] as int,
+      page: json['page'] as int,
     );
 
 Map<String, dynamic> _$ResourceItemToJson(ResourceItem instance) =>
@@ -33,6 +34,7 @@ Map<String, dynamic> _$ResourceItemToJson(ResourceItem instance) =>
       'fontFamily': instance.fontFamily,
       'fontColor': instance.fontColor,
       'fontSize': instance.fontSize,
+      'page': instance.page,
       'x': instance.x,
       'y': instance.y,
       'rotation': instance.rotation,
